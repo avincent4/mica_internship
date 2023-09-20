@@ -1,0 +1,14 @@
+function s = simulator_3000(antenna, show, f1, f2)
+
+    freq = linspace(f1, f2, Nf);
+    
+     s = sparameters(antenna, freq, 50);
+
+    if show == 1
+     
+        figure;
+        rfplot(s);
+
+    end 
+
+end

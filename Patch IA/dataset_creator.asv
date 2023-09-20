@@ -1,0 +1,58 @@
+%% Paramétrage du créateur de dataset
+
+clear all;
+clc;
+close all;
+
+Nd = 10;       %nombre d'expériences dans le dataset
+
+
+%% Itération des simulations
+
+
+
+for i = 1:Nd
+    
+  i
+    % Define the ranges for randomization
+    Lgnd_range = [1.5e-3, 2.5e-3];
+    Wgnd_range = [1.8e-3, 2.5e-3];
+    La_range = [1.0e-3, 1.5e-3];
+    Wa_range = [1.2e-3, 1.8e-3];
+    Wf_range = [0.4e-3, 0.6e-3];
+    Wi_range = [0.05e-3, 0.1e-3];
+    Li_range = [0.3e-3, 0.45e-3];
+    H_range = [0.1e-3, 0.2e-3];
+    
+    % Randomize the values
+    Lgnd = Lgnd_range(1) + (Lgnd_range(2) - Lgnd_range(1)) * rand();
+    Wgnd = Wgnd_range(1) + (Wgnd_range(2) - Wgnd_range(1)) * rand();
+    La = La_range(1) + (La_range(2) - La_range(1)) * rand();
+    Wa = Wa_range(1) + (Wa_range(2) - Wa_range(1)) * rand();
+    Wf = Wf_range(1) + (Wf_range(2) - Wf_range(1)) * rand();
+    Wi = Wi_range(1) + (Wi_range(2) - Wi_range(1)) * rand();
+    Li = Li_range(1) + (Li_range(2) - Li_range(1)) * rand();
+    H = H_range(1) + (H_range(2) - H_range(1)) * rand();
+
+    parameters = [Lgnd, Wgnd, La, Wa, Wf, Wi, Li, H];
+    
+    % Display the randomized values
+    disp(['Lgnd: ', num2str(Lgnd)]);
+    disp(['Wgnd: ', num2str(Wgnd)]);
+    disp(['La:   ', num2str(La)]);
+    disp(['Wa:   ', num2str(Wa)]);
+    disp(['Wf:   ', num2str(Wf)]);
+    disp(['Wi:   ', num2str(Wi)]);
+    disp(['Li:   ', num2str(Li)]);
+    disp(['H:    ', num2str(H)]);
+
+
+    buff = pat_dsgnor_3000(Lgnd, Wgnd, La, Wa, Wf, Wi, Li, H);
+
+    f0 = 3.0e8/(2*Wa*sqrt((2.2 + 1)/2))
+
+    [s11_buff, freq] = simulator_3000(buff, 1, f0-30e9, f0+30e9, 50);
+
+    formatator_3000(parameters, s11_buff, freq, -10, 3, 'intervalles_s11.cs')
+
+end
